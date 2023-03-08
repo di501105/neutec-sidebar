@@ -1,73 +1,69 @@
 <template>
   <a-config-provider>
     <div class="p-4 space-y-4">
-      <div class="font-bold text-3xl">Kuro Hsu Repo list:</div>
-      <div
-        v-for="item in repoList"
-        :key="item.id"
-        class="shadow-lg rounded-lg space-y-2 p-4 min-h-[142px] flex flex-col justify-center"
+      <a-menu
+        id="dddddd"
+        v-model:openKeys="openKeys"
+        v-model:selectedKeys="selectedKeys"
+        style="width: 256px"
+        mode="inline"
+        @click="handleClick"
       >
-        <div class="font-bold text-lg">
-          {{ item.name }}
-        </div>
-        <div v-show="item.description">
-          {{ item.description }}
-        </div>
-        <a
-          class="font-semibold inline-block"
-          :href="item.html_url"
-          target="_blank"
-        >
-          {{ item.html_url }}
-        </a>
-      </div>
-      <infinite-loading :distance="1" @infinite="infiniteHandler" />
+        <a-sub-menu key="sub1">
+          <template #title>Navigation One</template>
+          <a-menu-item-group key="g1">
+            <template #title>Item 1</template>
+            <a-menu-item key="1">Option 1</a-menu-item>
+            <a-menu-item key="2">Option 2</a-menu-item>
+          </a-menu-item-group>
+          <a-menu-item-group key="g2" title="Item 2">
+            <a-menu-item key="3">Option 3</a-menu-item>
+            <a-menu-item key="4">Option 4</a-menu-item>
+          </a-menu-item-group>
+        </a-sub-menu>
+        <a-sub-menu key="sub2">
+          <template #title>Navigation Two</template>
+          <a-menu-item key="5">Option 5</a-menu-item>
+          <a-menu-item key="6">Option 6</a-menu-item>
+          <a-sub-menu key="sub3" title="Submenu">
+            <a-menu-item key="7">Option 7</a-menu-item>
+            <a-menu-item key="8">Option 8</a-menu-item>
+          </a-sub-menu>
+        </a-sub-menu>
+        <a-sub-menu key="sub4">
+          <template #title>Navigation Three</template>
+          <a-menu-item key="9">Option 9</a-menu-item>
+          <a-menu-item key="10">Option 10</a-menu-item>
+          <a-menu-item key="11">Option 11</a-menu-item>
+          <a-menu-item key="12">Option 12</a-menu-item>
+        </a-sub-menu>
+      </a-menu>
     </div>
   </a-config-provider>
 </template>
 
 <script lang="ts">
-import debounce from 'lodash/debounce';
-import InfiniteLoading from 'infinite-loading-vue3-ts';
 import { defineComponent, ref } from 'vue';
-
-import { getUserRepo } from '@/api/repos';
 
 export default defineComponent({
   name: 'App',
-  components: {
-    InfiniteLoading,
-  },
   setup: () => {
     /**
      * data
      */
-    const repoList = ref<any>([]);
-    const pageNumber = ref<number>(6);
+    const selectedKeys = ref<string[]>(['1']);
+    const openKeys = ref<string[]>(['sub1']);
     /**
      * mehtods
      */
-    const infiniteHandler = debounce(async ($state: any): Promise<void> => {
-      const params = {
-        user: 'kurotanshi',
-        pageNumber: pageNumber.value,
-      };
-      const res = await getUserRepo(params);
-
-      if (res.length) {
-        repoList.value = [];
-        pageNumber.value += 6;
-        repoList.value.push(...res);
-        setTimeout(() => {
-          $state.loaded();
-        }, 1000);
-      } else {
-        $state.complete();
-      }
-    }, 500);
+    const handleClick = () => {
+      console.log(1111);
+    };
+    //
     return {
-      infiniteHandler,
-      repoList,
+      selectedKeys,
+      openKeys,
+      handleClick,
     };
   },
 });
