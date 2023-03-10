@@ -8,7 +8,4 @@ npm run dev
 ```
 
 *GitHub page*
-[neutec-infinite-loading](https://di501105.github.io/neutec-infinite-loading/)
-
-*串接 Kuro GitHub*
-[GitHub](https://github.com/kurotanshi)
+[neutec-sidebar](https://di501105.github.io/neutec-sidebar/)

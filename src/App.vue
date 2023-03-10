@@ -2,16 +2,19 @@
   <a-config-provider>
     <div class="p-4 space-y-4">
       <a-menu
-        id="dddddd"
-        v-model:openKeys="openKeys"
         v-model:selectedKeys="selectedKeys"
+        :open-keys="openKeys"
         mode="inline"
         class="w-64"
         @open-change="onOpenChange"
       >
         <a-sub-menu v-for="item in menuOptions" :key="item.value">
           <template #title>{{ item.label }}</template>
-          <SubMenu :menu="item.subMenu" />
+          <sub-menu
+            v-for="subItem in item.subMenu"
+            :key="subItem.value"
+            :menu="subItem"
+          />
         </a-sub-menu>
       </a-menu>
     </div>
@@ -19,6 +22,7 @@
 </template>
 
 <script lang="ts">
+import isEmpty from 'lodash/isEmpty';
 import { defineComponent, defineAsyncComponent, ref, computed } from 'vue';
 
 export default defineComponent({
@@ -32,7 +36,7 @@ export default defineComponent({
     /**
      * data
      */
-    const selectedKeys = ref<string[]>(['1']);
+    const selectedKeys = ref<string[]>([]);
     const openKeys = ref<string[]>([]);
     const menuOptions = ref<any>([
       {
@@ -80,10 +84,76 @@ export default defineComponent({
           {
             label: '烏龍茶',
             value: 'g2-1',
+            subMenu: [],
           },
           {
             label: '綠茶',
             value: 'g2-2',
+            ubMenu: [],
+          },
+          {
+            label: '紅茶',
+            value: 'g2-3',
+            ubMenu: [],
+          },
+          {
+            label: '青茶',
+            value: 'g2-4',
+            ubMenu: [],
+          },
+        ],
+      },
+      {
+        label: '咖啡',
+        value: 'g3',
+        subMenu: [
+          {
+            label: '黑咖啡',
+            value: 'g3-1',
+            subMenu: [
+              {
+                label: '濃縮咖啡',
+                value: 'g3-1-1',
+              },
+              {
+                label: '美式咖啡',
+                value: 'g3-1-2',
+              },
+            ],
+          },
+          {
+            label: '牛奶咖啡',
+            value: 'g3-2',
+            subMenu: [
+              {
+                label: '拿鐵',
+                value: 'g3-2-1',
+                subMenu: [
+                  {
+                    label: '黑糖拿鐵',
+                    value: 'g3-2-1-1',
+                  },
+                  {
+                    label: '榛果拿鐵',
+                    value: 'g3-2-1-2',
+                  },
+                  {
+                    label: '香草拿鐵',
+                    value: 'g3-2-1-3',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            label: '卡布奇諾',
+            value: 'g3-3',
+            subMenu: [],
+          },
+          {
+            label: '摩卡',
+            value: 'g3-4',
+            subMenu: [],
           },
         ],
       },
@@ -100,16 +170,10 @@ export default defineComponent({
      * mehtods
      */
     const onOpenChange = (keys: any) => {
-      console.log(keys, 666666, rootSubmenuKeys.value, openKeys.value);
-
       const latestOpenKey = keys.find(
         (key: any) => openKeys.value.indexOf(key) === -1
       );
-      console.log(latestOpenKey, 88888);
-
       if (rootSubmenuKeys.value.indexOf(latestOpenKey) === -1) {
-        console.log(123123123123);
-
         openKeys.value = keys;
       } else {
         openKeys.value = latestOpenKey ? [latestOpenKey] : [];
@@ -117,6 +181,7 @@ export default defineComponent({
     };
     //
     return {
+      isEmpty,
       selectedKeys,
       openKeys,
       menuOptions,

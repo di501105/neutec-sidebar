@@ -1,21 +1,26 @@
 <template>
-  <a-sub-menu v-for="subItem in menu" :key="subItem.value">
-    <template #title>{{ subItem.label }}</template>
-    <div v-if="!isEmpty(subItem.subMenu)">
-      <a-menu-item
-        v-for="subSubItem in subItem.subMenu"
-        :key="subSubItem.value"
-      >
-        {{ subSubItem.label }}
+  <div>
+    <template v-if="!isEmpty(subMenu.subMenu)">
+      <a-sub-menu :key="subMenu.value">
+        <template #title>{{ subMenu.label }}</template>
+        <sub-menu
+          v-for="subSubItem in subMenu.subMenu"
+          :key="subSubItem.value"
+          :menu="subSubItem"
+        />
+      </a-sub-menu>
+    </template>
+    <template v-else>
+      <a-menu-item :key="subMenu.value">
+        {{ subMenu.label }}
       </a-menu-item>
-    </div>
-    <sub-menu v-else :menu="subItem.subItem" />
-  </a-sub-menu>
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
 import isEmpty from 'lodash/isEmpty';
-import { defineComponent, defineAsyncComponent } from 'vue';
+import { defineComponent, defineAsyncComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'SubMenu',
@@ -26,10 +31,16 @@ export default defineComponent({
   },
   props: {
     menu: { type: Array, default: () => [] },
+    level: { type: Number, default: 0 },
   },
-  setup: () => {
+  setup: (props) => {
+    /**
+     * data
+     */
+    const subMenu = ref<any>(props.menu);
     return {
       isEmpty,
+      subMenu,
     };
   },
 });
