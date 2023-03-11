@@ -21,7 +21,6 @@ export default defineConfig({
         /\.md$/, // .md
       ],
       imports: ['vue'],
-      dts: 'src/auto-imports.d.ts',
     }),
     Components({
       resolvers: [AntDesignVueResolver({ importStyle: false })],

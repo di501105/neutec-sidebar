@@ -14,7 +14,7 @@ const instance = axios.create({
 });
 // 請求攔截器
 instance.interceptors.request.use(
-  (config: any) => {
+  (config) => {
     // 每次發送請求之前判斷是否存在token，如果存在，則統一在http請求的header都加上token，不用每次請求都手動添加了
     // 若請求方式為post，則將data參數轉為JSON字符串
     if (config.method === 'POST') {

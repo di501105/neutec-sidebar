@@ -37,7 +37,7 @@
   </a-config-provider>
 </template>
 
-<script lang="ts">
+<script>
 import isEmpty from 'lodash/isEmpty';
 import {
   defineComponent,
@@ -50,18 +50,18 @@ import {
 export default defineComponent({
   name: 'App',
   components: {
-    SubMenu: defineAsyncComponent(
-      () => import('@/views/components/SubMenu.vue')
+    SubMenu: defineAsyncComponent(() =>
+      import('@/views/components/SubMenu.vue')
     ),
   },
   setup: () => {
     /**
      * data
      */
-    const selectedKeys = ref<string[]>([]);
-    const openKeys = ref<string[]>([]);
-    const selectedDrink = ref<any>(undefined);
-    const menuOptions = ref<any>([
+    const selectedKeys = ref([]);
+    const openKeys = ref([]);
+    const selectedDrink = ref(undefined);
+    const menuOptions = ref([
       {
         label: '好喝黑糖',
         value: 'g1',
@@ -181,7 +181,7 @@ export default defineComponent({
         ],
       },
     ]);
-    const selectOptions = ref<any>([
+    const selectOptions = ref([
       { label: '黑糖珍珠鮮奶', value: 'g1-1-1', group: ['g1', 'g1-1'] },
       { label: '黑糖芋圓鮮奶', value: 'g1-1-2', group: ['g1', 'g1-1'] },
       { label: '黑糖蒟蒻鮮奶', value: 'g1-1-3', group: ['g1', 'g1-1'] },
@@ -203,16 +203,16 @@ export default defineComponent({
      * computed
      */
     const rootSubmenuKeys = computed(() => {
-      return menuOptions.value.map((item: any) => {
+      return menuOptions.value.map((item) => {
         return item.value;
       });
     });
     /**
      * mehtods
      */
-    const onOpenChange = (keys: any) => {
+    const onOpenChange = (keys) => {
       const latestOpenKey = keys.find(
-        (key: any) => openKeys.value.indexOf(key) === -1
+        (key) => openKeys.value.indexOf(key) === -1
       );
       if (rootSubmenuKeys.value.indexOf(latestOpenKey) === -1) {
         openKeys.value = keys;
@@ -220,21 +220,21 @@ export default defineComponent({
         openKeys.value = latestOpenKey ? [latestOpenKey] : [];
       }
     };
-    const handleChange = (event: any) => {
+    const handleChange = (event) => {
       selectedKeys.value = [];
       selectedKeys.value.push(event.value);
       openKeys.value = event.option.group;
       localStorage.setItem('selectedKeys', event.value);
       localStorage.setItem('openKeys', JSON.stringify(event.option.group));
     };
-    const handleClick = (event: any) => {
+    const handleClick = (event) => {
       selectedDrink.value = event.key;
       localStorage.setItem('selectedKeys', event.key);
       localStorage.setItem('openKeys', JSON.stringify(event.keyPath));
     };
     const setData = () => {
-      const localSelectedKeys: any = localStorage.getItem('selectedKeys');
-      const localOpenKeys: any = localStorage.getItem('openKeys');
+      const localSelectedKeys = localStorage.getItem('selectedKeys');
+      const localOpenKeys = localStorage.getItem('openKeys');
       selectedKeys.value.push(localSelectedKeys);
       selectedDrink.value = localSelectedKeys;
       openKeys.value = JSON.parse(localOpenKeys);

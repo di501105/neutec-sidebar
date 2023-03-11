@@ -6,7 +6,7 @@ import instance from './index';
  * @param {Object} config  請求的配置
  * @returns {Promise}     返回一個promise對象，其實就相當於axios請求數據的返回值
  */
-const axios = async ({ method, url, data, config }: any): Promise<any> => {
+const axios = async ({ method, url, data, config }) => {
   const methodLowCase = method.toLowerCase();
   if (methodLowCase === 'post') {
     return instance.post(url, data, { ...config });

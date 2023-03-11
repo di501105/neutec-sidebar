@@ -18,15 +18,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import isEmpty from 'lodash/isEmpty';
 import { defineComponent, defineAsyncComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'SubMenu',
   components: {
-    SubMenu: defineAsyncComponent(
-      () => import('@/views/components/SubMenu.vue')
+    SubMenu: defineAsyncComponent(() =>
+      import('@/views/components/SubMenu.vue')
     ),
   },
   props: {
@@ -37,7 +37,7 @@ export default defineComponent({
     /**
      * data
      */
-    const subMenu = ref<any>(props.menu);
+    const subMenu = ref(props.menu);
     return {
       isEmpty,
       subMenu,
